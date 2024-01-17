@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/servicediscovery"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	test_helper_servicediscovery "github.com/nexient-llc/tf-caf-terratest-common/lib/aws/servicediscovery"
-	"github.com/nexient-llc/tf-caf-terratest-common/types"
+	test_helper_servicediscovery "github.com/nexient-llc/lcaf-component-terratest-common/lib/aws/servicediscovery"
+	"github.com/nexient-llc/lcaf-component-terratest-common/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

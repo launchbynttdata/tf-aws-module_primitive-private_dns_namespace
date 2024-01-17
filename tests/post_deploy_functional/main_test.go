@@ -3,9 +3,9 @@ package main
 import (
 	"testing"
 
+	"github.com/nexient-llc/lcaf-component-terratest-common/lib"
+	"github.com/nexient-llc/lcaf-component-terratest-common/types"
 	testimpl "github.com/nexient-llc/tf-aws-module-private_dns_namespace/tests/testimpl"
-	"github.com/nexient-llc/tf-caf-terratest-common/lib"
-	"github.com/nexient-llc/tf-caf-terratest-common/types"
 )
 
 const (

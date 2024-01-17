@@ -5,9 +5,8 @@ go 1.20
 require github.com/stretchr/testify v1.8.1
 
 require (
-	github.com/nexient-llc/tf-aws-module-private_dns_namespace v0.0.0-00010101000000-000000000000
 	github.com/gruntwork-io/terratest v0.43.12
-	github.com/nexient-llc/tf-caf-terratest-common v0.0.0-20230828171431-63fb3d474745
+	github.com/nexient-llc/lcaf-component-terratest-common v0.0.0-20240117163707-a1dfafae58b4
 )
 
 require (
