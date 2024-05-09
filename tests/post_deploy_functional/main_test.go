@@ -3,9 +3,9 @@ package main
 import (
 	"testing"
 
-	"github.com/nexient-llc/lcaf-component-terratest-common/lib"
-	"github.com/nexient-llc/lcaf-component-terratest-common/types"
-	testimpl "github.com/nexient-llc/tf-aws-module-private_dns_namespace/tests/testimpl"
+	"github.com/launchbynttdata/lcaf-component-terratest/lib"
+	"github.com/launchbynttdata/lcaf-component-terratest/types"
+	testimpl "github.com/launchbynttdata/tf-aws-module_primitive-private_dns_namespace/tests/testimpl"
 )
 
 const (
@@ -15,10 +15,16 @@ const (
 
 func TestPvtDNSNamespaceModule(t *testing.T) {
 
-	ctx := types.TestContext{
-		TestConfig: &testimpl.ThisTFModuleConfig{},
-	}
-	lib.RunSetupTestTeardown(t, testConfigsExamplesFolderDefault, infraTFVarFileNameDefault, ctx,
-		testimpl.TestNonComposableComplete,
-		testimpl.TestComposableComplete)
+	ctx := types.CreateTestContextBuilder().
+		SetTestConfig(&testimpl.ThisTFModuleConfig{}).
+		SetTestConfigFolderName(testConfigsExamplesFolderDefault).
+		SetTestConfigFileName(infraTFVarFileNameDefault).
+		SetTestSpecificFlags(map[string]types.TestFlags{
+			"complete": {
+				"IS_TERRAFORM_IDEMPOTENT_APPLY": true,
+			},
+		}).
+		Build()
+
+	lib.RunSetupTestTeardown(t, *ctx, testimpl.TestNonComposableComplete, testimpl.TestComposableComplete)
 }

@@ -7,16 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/servicediscovery"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	test_helper_servicediscovery "github.com/nexient-llc/lcaf-component-terratest-common/lib/aws/servicediscovery"
-	"github.com/nexient-llc/lcaf-component-terratest-common/types"
+	test_helper_servicediscovery "github.com/launchbynttdata/lcaf-component-terratest/lib/aws/servicediscovery"
+	"github.com/launchbynttdata/lcaf-component-terratest/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestNonComposableComplete(t *testing.T, ctx types.TestContext) {
 	t.Run("TestIsPrivateServiceDiscoverable", func(t *testing.T) {
-		test_service_id := terraform.Output(t, ctx.TerratestTerraformOptions, "service_id")
-		test_service_name := terraform.Output(t, ctx.TerratestTerraformOptions, "service_name")
+		test_service_id := terraform.Output(t, ctx.TerratestTerraformOptions(), "service_id")
+		test_service_name := terraform.Output(t, ctx.TerratestTerraformOptions(), "service_name")
 
 		awsServiceDiscoveryClient := test_helper_servicediscovery.GetAwsServiceDiscoveryClient(t)
 
@@ -32,7 +32,7 @@ func TestNonComposableComplete(t *testing.T, ctx types.TestContext) {
 
 func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 	t.Run("TestIsNamespaceExist", func(t *testing.T) {
-		namespace_id := terraform.Output(t, ctx.TerratestTerraformOptions, "id")
+		namespace_id := terraform.Output(t, ctx.TerratestTerraformOptions(), "id")
 
 		awsServiceDiscoveryClient := test_helper_servicediscovery.GetAwsServiceDiscoveryClient(t)
 		namespaceOut, err := awsServiceDiscoveryClient.GetNamespace(context.TODO(), &servicediscovery.GetNamespaceInput{
@@ -40,7 +40,7 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 		})
 
 		require.NoError(t, err, "retrieve AWS namespace")
-		assert.Equal(t, ctx.TestConfig.(*ThisTFModuleConfig).Name, *namespaceOut.Namespace.Name)
+		assert.Equal(t, ctx.TestConfig().(*ThisTFModuleConfig).Name, *namespaceOut.Namespace.Name)
 
 	})
 }

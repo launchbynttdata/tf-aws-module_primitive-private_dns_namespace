@@ -3,21 +3,28 @@ package main
 import (
 	"testing"
 
-	testimpl "github.com/nexient-llc/tf-aws-module-private_dns_namespace/tests/testimpl"
+	testimpl "github.com/launchbynttdata/tf-aws-module_primitive-private_dns_namespace/tests/testimpl"
 
-	"github.com/nexient-llc/lcaf-component-terratest-common/lib"
-	"github.com/nexient-llc/lcaf-component-terratest-common/types"
+	"github.com/launchbynttdata/lcaf-component-terratest/lib"
+	"github.com/launchbynttdata/lcaf-component-terratest/types"
 )
 
 const (
-	testConfigDefault         = "../../examples/complete"
-	infraTFVarFileNameDefault = "test.tfvars"
+	testConfigsExamplesFolderDefault = "../../examples"
+	infraTFVarFileNameDefault        = "test.tfvars"
 )
 
 func TestPvtDNSNamespaceModule(t *testing.T) {
 	//to implement non destructive tests for this TF module first
-	ctx := types.TestContext{
-		TestConfig: &testimpl.ThisTFModuleConfig{},
-	}
-	lib.RunNonDestructiveTest(t, testConfigDefault, infraTFVarFileNameDefault, ctx, testimpl.TestComposableComplete)
+	ctx := types.CreateTestContextBuilder().
+		SetTestConfig(&testimpl.ThisTFModuleConfig{}).
+		SetTestConfigFolderName(testConfigsExamplesFolderDefault).
+		SetTestConfigFileName(infraTFVarFileNameDefault).
+		SetTestSpecificFlags(map[string]types.TestFlags{
+			"complete": {
+				"IS_TERRAFORM_IDEMPOTENT_APPLY": true,
+			},
+		}).
+		Build()
+	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestComposableComplete)
 }
