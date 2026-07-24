@@ -44,3 +44,23 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 
 	})
 }
+
+// TestComposableCompleteReadOnly is the dedicated implementation for the
+// post_deploy_functional_readonly suite. It must remain read-only (no
+// creates, updates, or deletes) and independent from TestComposableComplete
+// so that changes to the functional suite's teardown callback cannot
+// accidentally alter readonly semantics.
+func TestComposableCompleteReadOnly(t *testing.T, ctx types.TestContext) {
+	t.Run("TestIsNamespaceExist", func(t *testing.T) {
+		namespace_id := terraform.Output(t, ctx.TerratestTerraformOptions(), "id")
+
+		awsServiceDiscoveryClient := test_helper_servicediscovery.GetAwsServiceDiscoveryClient(t)
+		namespaceOut, err := awsServiceDiscoveryClient.GetNamespace(context.TODO(), &servicediscovery.GetNamespaceInput{
+			Id: aws.String(namespace_id),
+		})
+
+		require.NoError(t, err, "retrieve AWS namespace")
+		assert.Equal(t, ctx.TestConfig().(*ThisTFModuleConfig).Name, *namespaceOut.Namespace.Name)
+
+	})
+}
