@@ -26,5 +26,5 @@ func TestPvtDNSNamespaceModule(t *testing.T) {
 			},
 		}).
 		Build()
-	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestComposableComplete)
+	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestComposableCompleteReadOnly)
 }
