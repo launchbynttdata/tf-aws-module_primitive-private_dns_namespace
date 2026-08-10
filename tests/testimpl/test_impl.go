@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/servicediscovery"
-	"github.com/aws/aws-sdk-go/aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	test_helper_servicediscovery "github.com/launchbynttdata/lcaf-component-terratest/lib/aws/servicediscovery"
 	"github.com/launchbynttdata/lcaf-component-terratest/types"
@@ -15,8 +15,8 @@ import (
 
 func TestNonComposableComplete(t *testing.T, ctx types.TestContext) {
 	t.Run("TestIsPrivateServiceDiscoverable", func(t *testing.T) {
-		test_service_id := terraform.Output(t, ctx.TerratestTerraformOptions(), "service_id")
-		test_service_name := terraform.Output(t, ctx.TerratestTerraformOptions(), "service_name")
+		test_service_id := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "service_id")
+		test_service_name := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "service_name")
 
 		awsServiceDiscoveryClient := test_helper_servicediscovery.GetAwsServiceDiscoveryClient(t)
 
@@ -32,7 +32,7 @@ func TestNonComposableComplete(t *testing.T, ctx types.TestContext) {
 
 func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 	t.Run("TestIsNamespaceExist", func(t *testing.T) {
-		namespace_id := terraform.Output(t, ctx.TerratestTerraformOptions(), "id")
+		namespace_id := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "id")
 
 		awsServiceDiscoveryClient := test_helper_servicediscovery.GetAwsServiceDiscoveryClient(t)
 		namespaceOut, err := awsServiceDiscoveryClient.GetNamespace(context.TODO(), &servicediscovery.GetNamespaceInput{
@@ -52,7 +52,7 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 // accidentally alter readonly semantics.
 func TestComposableCompleteReadOnly(t *testing.T, ctx types.TestContext) {
 	t.Run("TestIsNamespaceExist", func(t *testing.T) {
-		namespace_id := terraform.Output(t, ctx.TerratestTerraformOptions(), "id")
+		namespace_id := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "id")
 
 		awsServiceDiscoveryClient := test_helper_servicediscovery.GetAwsServiceDiscoveryClient(t)
 		namespaceOut, err := awsServiceDiscoveryClient.GetNamespace(context.TODO(), &servicediscovery.GetNamespaceInput{
